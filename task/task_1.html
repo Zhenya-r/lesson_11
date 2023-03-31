@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Task 1</title>
+</head>
+
+<body>
+
+   <a href="../index.html">До задач </a>
+   <p>Знайти суми елементів у вказаній області</p>
+   <ul>
+      <li>Вибірково</li>
+      <li>Суму парних рядків</li>
+      <li>Суму непарних стовпців</li>
+      <li>У парних рядках – непарні стовпці, у непарних – парні.</li>
+   </ul>
+   <script>
+      const arr = [[1, 2, 3, 4], [3, 4, 5, 6], [1, 1, 1, 1], [2, 2, 3, 3]]
+
+      //так як умову я до кінця не зрозумів (там де на картинках синів виділенно що саме потрібно рахувати), то вирішив створити універсальну функцію яка буде рахувати будь які проміжки )))
+      function getSummElementsSelectively(array, rowIndexStart = 0, columnIndexStart = 0, rowIndexEnd = arr.length - 1, columnIndexEnd = arr[rowIndexEnd].length - 1) {
+         let summElements = 0;
+         for (let i = rowIndexStart; i <= rowIndexEnd; i++) {
+            for (let j = columnIndexStart; j <= columnIndexEnd; j++) {
+               summElements += array[i][j]
+            }
+         }
+         return summElements
+      }
+
+      function getSummElements(array, task) {
+         switch (task) {
+            case 2:
+               return caclSummElements(array, 0, 0, 2, 1)
+            case 3:
+               return caclSummElements(array, 0, 1, 1, 2)
+            case 4:
+               return caclSummElements(array, 0, 0, 1, 2, 4)
+         }
+      }
+
+      function caclSummElements(array, rowStartIndex, columnStartIndex, rowStep, columnStep, task) {
+         let summEvenRow = 0;
+
+         if (task === 4) {
+            for (let rowIndex = rowStartIndex; rowIndex < array.length; rowIndex += rowStep) {
+               columnStartIndex = rowIndex % 2 === 0 ? 1 : 0
+               for (let columnIndex = columnStartIndex; columnIndex < array[rowIndex].length; columnIndex += columnStep) {
+                  summEvenRow += array[rowIndex][columnIndex]
+               }
+            }
+
+         }
+
+         else {
+            for (let rowIndex = rowStartIndex; rowIndex < array.length; rowIndex += rowStep) {
+               for (let columnIndex = columnStartIndex; columnIndex < array[rowIndex].length; columnIndex += columnStep) {
+                  summEvenRow += array[rowIndex][columnIndex]
+               }
+            }
+         }
+         return summEvenRow
+      }
+
+
+      console.log(getSummElementsSelectively(arr));
+
+      console.log(getSummElements(arr, 2));
+      console.log(getSummElements(arr, 3));
+      console.log(getSummElements(arr, 4));
+
+
+   </script>
+</body>
+
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Task 3</title>
+</head>
+
+<body>
+   <a href="../index.html">До задач</a>
+   <p> Морський бій. Випадковим чином на двовимірному полі розміром 6*6 розташовується 5 кораблів. Користувач стріляє вказуючи координати. Гра продовжується поки не потоплено усі кораблі або у користувача не закінчаться снаряди.</p>
+   <script>
+
+      const rows = 6
+      const columns = 6
+      const rowsIndex = rows - 1
+      const columnsIndex = columns - 1
+
+      let numberShip = 5
+      let amountUserShots = parseInt(prompt(`Введіть кількість снарядів (від 1 до ${rows * columns})`))
+
+      function createField(rows, columns) {
+         let field = []
+         for (let row = 0; row < rows; row++) {
+            field.push(new Array(columns).fill(0))
+         }
+         return field
+      }
+
+
+      function randomPlace(maxValue) {
+         return Math.floor(Math.random() * maxValue)
+      }
+
+
+
+      function createShip(numberShip, rows, columns) {
+
+         const field = createField(rows, columns)
+
+         do {
+            let placeShipRow = randomPlace(rows)
+            let placeShipColumn = randomPlace(columns)
+            let placeShip = field[placeShipRow][placeShipColumn]
+            if (!placeShip) {
+               field[placeShipRow][placeShipColumn] = 1
+               numberShip--
+            }
+
+         } while (numberShip);
+
+         return field
+      }
+
+      function game(amountUserShots, numberShip) {
+
+         const playField = createShip(numberShip, rows, columns)
+
+         do {
+            const userShotRow = parseInt(prompt(`Введіть координати по горизонталі від 0 до ${rowsIndex}`))
+            const userShotColumn = parseInt(prompt(`Введіть координати по вертикалі від 0 до ${columnsIndex}`))
+
+            if (playField[userShotRow][userShotColumn]) {
+               numberShip--
+               amountUserShots--
+               alert(`Вітаю, ви влучили! Залишилось ${numberShip} кораблів та  ${amountUserShots} вистрілів `)
+               playField[userShotRow][userShotColumn] = 0
+            }
+
+            else {
+               amountUserShots--
+               alert(`Промах! Залишилось ${numberShip} кораблів та  ${amountUserShots} вистрілів`)
+            }
+
+         } while (amountUserShots && numberShip);
+      }
+
+      game(amountUserShots, numberShip)
+
+
+   </script>
+</body>
+
+</html>

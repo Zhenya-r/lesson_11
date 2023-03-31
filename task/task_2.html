@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Task 2</title>
+</head>
+
+<body>
+   <a href="../index.html">До задач</a>
+   <p> Дано інформацію про прибуток К магазинів протягом тижня. Знайти :</p>
+   <ul>
+      <li>загальний прибуток кожного масиву за тиждень;</li>
+      <li>загальний прибуток усіх магазинів по дням (загальний прибуток усіх магазинів за понеділок, за вівторок, і т.д.);</li>
+      <li>загальний прибуток за робочі дні</li>
+      <li>загальний прибуток за вихідні дні</li>
+      <li>максимальний прибуток за середу</li>
+      <li>сформувати загальний список (одновимірний масив) зі значенням, які що більші за 200</li>
+      <li>відсортувати кожен тиждень за зростанням</li>
+      <li>відсортувати тижні (рядки) за спаданням максимального елементи у цьому тижні (рядку), тобто при порівнянні рядків потрібно порівнювати максимальні елементи у кожному з цих рядків</li>
+      <li>упорядкувати тижні (рядки) за спаданням суми елементів у рядку (тобто при порівнянні двох рядків треба знайти суму кожного з рядків і порівнювати ці суми, на основі цих сум буде зрозуміло, який з елементів повинен іти раніше).</li>
+   </ul>
+   <script>
+      const arr = [[250, 320, 520, 130, 250, 230, 920], [540, 520, 250, 230, 360, 760, 120]]
+
+      //загальний прибуток кожного масиву за тиждень;
+      const totalProfitOfEachShopPerWeek = arr.map(weekShopProfit => weekShopProfit.reduce((totalShopProfit, dayProfit) => totalShopProfit + dayProfit))
+      console.log(totalProfitOfEachShopPerWeek);
+
+      // загальний прибуток усіх магазинів по дням (загальний прибуток усіх магазинів за понеділок, за вівторок, і т.д.);
+      let totalProfitOfEachShopPerDays = caclTotalProfitFromDayToDay(arr)
+      console.log(totalProfitOfEachShopPerDays);
+
+      //загальний прибуток за робочі дні
+      let totalProfitOfEachShopPerWorkDay = caclTotalProfitFromDayToDay(arr, 0, 5)
+      console.log(totalProfitOfEachShopPerWorkDay);
+
+
+      //загальний прибуток за робочі дні
+      let totalProfitOfEachShopPerWeekend = caclTotalProfitFromDayToDay(arr, 5, 7)
+      console.log(totalProfitOfEachShopPerWeekend);
+
+      function caclTotalProfitFromDayToDay(array, dayStart = 0, dayEnd = 7) {
+         let totalProfitFromDayToDay = []
+         for (let columnIndex = dayStart; columnIndex < dayEnd; columnIndex++) {
+            let summ = 0
+            for (let rowIndex = 0; rowIndex < arr.length; rowIndex++) {
+               summ += arr[rowIndex][columnIndex]
+            }
+            totalProfitFromDayToDay.push(summ)
+         }
+         return totalProfitFromDayToDay
+      }
+
+      //максимальний прибуток за середу
+      function getMaxValue(arr, day) {
+         // const arrayDayWeek = arr.map(shopProfit => shopProfit[day])
+         // return Math.max(...arrayDayWeek)
+         return arr.reduce((maxValue, shopProfit) => {
+            return maxValue > shopProfit[2] ? maxValue : shopProfit[2]
+         }, -Infinity)
+
+      }
+
+      const maxProfitWednesday = getMaxValue(arr, 2)
+      console.log(maxProfitWednesday);
+
+      //сформувати загальний список (одновимірний масив) зі значенням, які що більші за 200
+      function getListWhithProfitMoreThanValue(arr, value) {
+         listWhithProfitMoreThanValue = []
+         for (const shop of arr) {
+            for (const dayProfit of shop) {
+               if (dayProfit > value) listWhithProfitMoreThanValue.push(dayProfit)
+            }
+         }
+         return listWhithProfitMoreThanValue
+      }
+
+      console.log(getListWhithProfitMoreThanValue(arr, 200));
+
+      //відсортувати кожен тиждень за зростанням
+      const sortInOrderOfGrowth = arr.map(shop => shop.sort((currentDay, nexDay) => currentDay - nexDay))
+      console.log(sortInOrderOfGrowth);
+
+      //відсортувати тижні (рядки) за спаданням максимального елементи у цьому тижні (рядку), тобто при порівнянні рядків потрібно порівнювати максимальні елементи у кожному з цих рядків
+      const sortByMaxValueInRow = arr.sort((currenShopProfit, nextShopProfit) => Math.max(...currenShopProfit) - Math.max(...nextShopProfit))
+      console.log(sortByMaxValueInRow);
+
+      //упорядкувати тижні (рядки) за спаданням суми елементів у рядку (тобто при порівнянні двох рядків треба знайти суму кожного з рядків і порівнювати ці суми, на основі цих сум буде зрозуміло, який з елементів повинен іти раніше).
+      const sortBySummRow = arr.sort((currenShopProfit, nextShopProfit) => nextShopProfit.reduce((currentDay, nexDay) => currentDay + nexDay) - currenShopProfit.reduce((currentDay, nexDay) => currentDay + nexDay))
+      console.log(sortBySummRow);
+   </script>
+</body>
+
+</html>
